@@ -13,6 +13,13 @@ my_function()
 # information that are passed into a function.
 
 def my_function(fname, lname):
-  print(fname + " " + lname)
+    return print(fname + " " + lname)
 
-my_function("Emil", "Refsnes")
+
+print(my_function("Emil", "Refsnes"))
+
+def add(a,b):
+    return a + b
+
+
+print(add(12,54))
