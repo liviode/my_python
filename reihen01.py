@@ -2,7 +2,7 @@
 
 # Arbitrary Arguments, *args
 #
-def reihe1(start, fun, iterations):
+def processReiheFunctions(start, fun, iterations):
     last = start
     for i in range(iterations):
         last = fun(last, i)
@@ -13,7 +13,7 @@ def fun1(last, n):
     return 0 if n == 0 else 1 / n
 
 
-reihe1(0, fun1, 10)
+processReiheFunctions(0, fun1, 10)
 
 print("* * * *")
 
@@ -22,7 +22,7 @@ def fun2(last, n):
     return last + (0 if n == 0 else 1 / n)
 
 
-reihe1(0, fun2, 10)
+processReiheFunctions(0, fun2, 10)
 
 print("* * * *")
 
@@ -36,6 +36,6 @@ def chaosFun(n, i):
     return chaosConst * n * (1 - n)
 
 
-reihe1(0.7, chaosFun, 2)
+processReiheFunctions(0.7, chaosFun, 2)
 
 print("* * * *")
