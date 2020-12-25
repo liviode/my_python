@@ -1,0 +1,85 @@
+
+function toCards(c1, c2, c3) {
+  return c1 + 36 * c2 + 36 * 36 * c3;
+}
+
+function toCardArray(cards) {
+  let c1 = cards % 36;
+  let c2 = Math.floor(cards / 36) % 36;
+  let c3 = Math.floor(cards / (36 * 36));
+  return [c1, c2, c3];
+}
+
+function valueOfCards(cards) {
+  let v = 0;
+  if (typeof cards === 'number') {
+    cards = toCardArray(cards);
+  }
+  if (rankOf(cards[0]) === rankOf(cards[1]) && rankOf(cards[0]) === rankOf(cards[2])) {
+    v = cardValue(cards[0]) === 11 ? 33 : 30.5;
+  } else {
+    let valuesByColor = [0, 0, 0, 0];
+    for (let c of cards) {
+      let colorInd = colorOf(c);
+      let value = cardValue(c);
+      valuesByColor[colorInd] += value;
+    }
+    v = Math.max(...valuesByColor);
+    v = v < 12 ? 0 : v;
+  }
+  return v;
+}
+
+function rankOf(c) {
+  return c % 9;
+}
+
+function colorOf(c) {
+  return Math.floor(c / 9);
+}
+
+function cardValue(c) {
+  return cardRank[c % 9].value;
+}
+
+const cardRank = [
+  { value: 11, name: 'Ass' },
+  { value: 10, name: 'König' },
+  { value: 10, name: 'Ober' },
+  { value: 10, name: 'Under' },
+  { value: 10, name: 'Banner' },
+  { value: 9, name: 'Nüüni' },
+  { value: 8, name: 'Achti' },
+  { value: 7, name: 'Sibni' },
+  { value: 6, name: 'Sächsi' }
+];
+
+function rankNameOf(c) {
+  return cardRank[c % 9].name;
+}
+
+function colorNameOf(c) {
+  return cardColor[colorOf(c)].name;
+}
+
+const cardColor = [{ name: 'Schälle' }, { name: 'Schilte' }, { name: 'Rose' }, { name: 'Eichle' }];
+
+function cardsToString(cards) {
+  if (!Array.isArray(cards)) {
+    cards = toCardArray(cards);
+  }
+  return cards.map((c) => `${colorNameOf(c)} ${rankNameOf(c)}`);
+}
+
+
+
+function randomCardSet(max = 36) {
+  let array = [];
+  while (array.length < max) {
+    let rnd = Math.floor(Math.random() * max);
+    if (array.indexOf(rnd) === -1) {
+      array.push(rnd);
+    }
+  }
+  return array;
+}
