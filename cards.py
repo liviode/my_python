@@ -15,6 +15,7 @@ class TwoPlayerJassStatus:
         self.current_player_index = 0
         self.players = [player1, player2]
         self.card_on_table = None
+        self.stacks = [[],[]]
 
     def trumpf_card(self):
         return self.cards[3][8]
@@ -39,6 +40,10 @@ class TwoPlayerJassStatus:
         else:
             wc = winner_card(card, self.card_on_table, self.trumpf_card())
 
+    def add_to_stack(self, playerIndex, card1, card2):
+        self.stacks[playerIndex].append(card1)
+        self.stacks[playerIndex].append(card2)
+
 
 card_rank = [
     {'value': 11, 'name': 'Ass'},
@@ -52,7 +57,8 @@ card_rank = [
     {'value': 6, 'name': 'Sächsi'}
 ]
 
-card_color = [{ 'name': 'Schälle' }, { 'name': 'Schilte' }, { 'name': 'Rose' }, { 'name': 'Eichle' }];
+card_color = ['Schälle', 'Schilte', 'Rose''Eichle']
+
 
 def card_description(card, trumpf_card):
     """Returns a description of the card"""

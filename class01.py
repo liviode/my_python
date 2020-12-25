@@ -1,9 +1,10 @@
 class Person:
     """This class shows the structure of a persons data"""
 
-    def __init__(self, firstName, lastName):
-        self.firstName = firstName
-        self.lastName = lastName
+    def __init__(self, f, l):
+        self.firstName = f
+        self.lastName = l
+        self.yearOfBirth = None
 
     def printMyName(self):
         print(self.firstName + " " + self.lastName)
@@ -12,6 +13,8 @@ class Person:
 
 livio = Person('Livio', 'de Capitani')
 toni = Person('Toni', 'Bünter')
+
+print(type(livio))
 
 
 livio.printMyName()
@@ -24,4 +27,4 @@ toni.printMyName()
 toni.yearOfBirth = 1964
 print(toni.yearOfBirth)
 
-# print(livio.yearOfBirth)
+print(livio.yearOfBirth)
