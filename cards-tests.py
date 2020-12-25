@@ -1,15 +1,13 @@
 #  Shuffle Cards for player Spieler A and B
 import cards
+
 # Array
 a = [[1, 2, 3], [4, 5, 6]]
 print(a[0])
 print(a[1])
 
+print(cards.random_card_set())
 
-
-print(cards.randomCardSet())
-
-
-new_game = cards.TwoPlayerJassStatus()
+new_game = cards.TwoPlayerJassStatus(100, 666)
 
 new_game.dump()

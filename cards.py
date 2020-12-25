@@ -40,9 +40,33 @@ class TwoPlayerJassStatus:
             wc = winner_card(card, self.card_on_table, self.trumpf_card())
 
 
+card_rank = [
+    {'value': 11, 'name': 'Ass'},
+    {'value': 10, 'name': 'König'},
+    {'value': 10, 'name': 'Ober'},
+    {'value': 10, 'name': 'Under'},
+    {'value': 10, 'name': 'Banner'},
+    {'value': 9, 'name': 'Nüüni'},
+    {'value': 8, 'name': 'Achti'},
+    {'value': 7, 'name': 'Sibni'},
+    {'value': 6, 'name': 'Sächsi'}
+]
+
+card_color = [{ 'name': 'Schälle' }, { 'name': 'Schilte' }, { 'name': 'Rose' }, { 'name': 'Eichle' }];
+
+def card_description(card, trumpf_card):
+    """Returns a description of the card"""
+    pass
+
+
+def card_value(card, trumpf_card):
+    """Returns the value of the card"""
+    pass
+
 
 def winner_card(card1, card2, trumpf_card):
     pass
+
 
 # see : https://docs.python.org/3/library/random.html
 def random_card_set(max=36):
