@@ -15,7 +15,7 @@ class TwoPlayerJassStatus:
         self.current_player_index = 0
         self.players = [player1, player2]
         self.card_on_table = None
-        self.stacks = [[],[]]
+        self.stacks = [[], []]
 
     def trumpf_card(self):
         return self.cards[3][8]
@@ -58,7 +58,44 @@ card_rank = [
     {'value': 0, 'name': 'Sächsi'}
 ]
 
-card_color = ['Schälle', 'Schilte', 'Rose', 'Eichle']
+_card_values = [11, 4, 3, 2, 10, 0, 0, 0, 0]
+_card_values_top = [11, 4, 3, 2, 10, 0, 8, 0, 0]
+_card_values_bottom = [0, 4, 3, 2, 10, 0, 8, 0, 11]
+_card_values_trumpf = [11, 4, 3, 20, 10, 14, 0, 0, 0]
+
+_card_codes = ['As', 'Kö', 'Ob', 'Un', 'Ba', '09', '08', '07', '06']
+
+_card_color_names = ['SE', 'SI', 'RO', 'EI']
+
+
+def to_card(card_code, color_name):
+    rank = _card_codes.index(card_code)
+    color = _card_color_names.index(color_name)
+    return pow(9, color) + rank
+
+
+def card_to_code(card):
+    return _card_color_names[card // 9] + ' ' + _card_codes[card % 9]
+
+
+def card_rank(card):
+    return card % 9
+
+
+def card_color_of(card):
+    return card // 9
+
+
+def card_value_of(card, trumpf_card):
+    rank = card % 9
+    trumpf_rank = card % 9
+    if (trumpf_rank == 0):
+        return _card_values_top(rank)
+    if (trumpf_rank == 8):
+        return _card_values_bottom(card % 9)
+    if (card // 9 == trumpf_card // 9):
+        return _card_values_trumpf(rank)
+    return _card_values(rank)
 
 
 def card_description(card, trumpf_card):
