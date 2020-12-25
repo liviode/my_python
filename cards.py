@@ -30,34 +30,35 @@ class TwoPlayerJassStatus:
     def possible_moves(self):
         pass
 
-    def move(self, player, card):
+    def move(self, player, player_card):
         if self.players[self.current_player_index] != player:
             return 'no_your_turn'
         if self.card_on_table is None:
-            self.card_on_table = card
+            self.card_on_table = player_card
             self.current_player_index = self.current_player_index + 1 % 2
             return 'card_on_table'
         else:
-            wc = winner_card(card, self.card_on_table, self.trumpf_card())
+            wc = winner_card(player_card, self.card_on_table, self.trumpf_card())
 
-    def add_to_stack(self, playerIndex, card1, card2):
-        self.stacks[playerIndex].append(card1)
-        self.stacks[playerIndex].append(card2)
+    def add_to_stack(self, player, card1, card2):
+        ind = self.players.index(player)
+        self.stacks[ind].append(card1)
+        self.stacks[ind].append(card2)
 
 
 card_rank = [
     {'value': 11, 'name': 'Ass'},
-    {'value': 10, 'name': 'König'},
-    {'value': 10, 'name': 'Ober'},
-    {'value': 10, 'name': 'Under'},
+    {'value': 4, 'name': 'König'},
+    {'value': 3, 'name': 'Ober'},
+    {'value': 2, 'name': 'Under'},
     {'value': 10, 'name': 'Banner'},
-    {'value': 9, 'name': 'Nüüni'},
-    {'value': 8, 'name': 'Achti'},
-    {'value': 7, 'name': 'Sibni'},
-    {'value': 6, 'name': 'Sächsi'}
+    {'value': 0, 'name': 'Nüüni'},
+    {'value': 0, 'name': 'Achti'},
+    {'value': 0, 'name': 'Sibni'},
+    {'value': 0, 'name': 'Sächsi'}
 ]
 
-card_color = ['Schälle', 'Schilte', 'Rose''Eichle']
+card_color = ['Schälle', 'Schilte', 'Rose', 'Eichle']
 
 
 def card_description(card, trumpf_card):
