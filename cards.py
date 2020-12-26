@@ -101,15 +101,18 @@ def card_description(card, trumpf_card=None):
 
     color_index = card // 9
     rank_index = card % 9
-    if trumpf_card==None:
+    if trumpf_card == None:
         return _card_color_descriptions[color_index] + ' ' + _card_descriptions[rank_index]
     pass
 
 
 def winner_card(card1, card2, trumpf_card):
     # TODO Das ist noch falsch
-    return card1 if card1>card2 else card2
+    # Wenn trumpf_card 'obe-nabe' ist ...
+    # Wenn trumpf_card unde-ufe ist....
+    # Wenn trumpf_card normal trumpf ist....
 
+    return card1 if card1 > card2 else card2
 
 
 # see : https://docs.python.org/3/library/random.html
@@ -121,5 +124,3 @@ def random_card_set(max=36):
 def random_card_set2(max=36):
     new_card_set = range(max)
     return random.sample(new_card_set, k=36)
-
-
