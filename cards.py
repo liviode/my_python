@@ -46,18 +46,6 @@ class TwoPlayerJassStatus:
         self.stacks[ind].append(card2)
 
 
-card_rank = [
-    {'value': 11, 'name': 'Ass'},
-    {'value': 4, 'name': 'König'},
-    {'value': 3, 'name': 'Ober'},
-    {'value': 2, 'name': 'Under'},
-    {'value': 10, 'name': 'Banner'},
-    {'value': 0, 'name': 'Nüüni'},
-    {'value': 0, 'name': 'Achti'},
-    {'value': 0, 'name': 'Sibni'},
-    {'value': 0, 'name': 'Sächsi'}
-]
-
 _card_values = [11, 4, 3, 2, 10, 0, 0, 0, 0]
 _card_values_top = [11, 4, 3, 2, 10, 0, 8, 0, 0]
 _card_values_bottom = [0, 4, 3, 2, 10, 0, 8, 0, 11]
@@ -66,6 +54,10 @@ _card_values_trumpf = [11, 4, 3, 20, 10, 14, 0, 0, 0]
 _card_codes = ['As', 'Kö', 'Ob', 'Un', 'Ba', '09', '08', '07', '06']
 
 _card_color_names = ['SE', 'SI', 'RO', 'EI']
+_card_color_descriptions = ['Schälle', 'Schilte', 'Rose', 'Eichle']
+_card_descriptions_trumpf = ['Trumpf Ass', 'Trumpf König', 'Trumpf Ober', 'Trumpf Puur', 'Trumpf Banner', 'Näll',
+                             'Trumpf Achti', 'Trumpf Sibni', 'Trumpf Sechsi']
+_card_descriptions = ['Ass', 'König', 'Ober', 'Puur', 'Banner', 'Nüüni', 'Achti', 'Sibni', 'Sechsi']
 
 
 def to_card(card_code, color_name):
@@ -86,25 +78,26 @@ def card_color_of(card):
     return card // 9
 
 
-def card_value_of(card, trumpf_card):
+def card_value(card, trumpf_card=None):
     rank = card % 9
-    trumpf_rank = card % 9
+    if trumpf_card == None:
+        return _card_values[rank]
+    trumpf_rank = trumpf_card % 9
+    # Obenabe
     if (trumpf_rank == 0):
-        return _card_values_top(rank)
+        return _card_values_top[rank]
+    # Undenufe
     if (trumpf_rank == 8):
-        return _card_values_bottom(card % 9)
+        return _card_values_bottom[rank]
+    # trumpf
     if (card // 9 == trumpf_card // 9):
-        return _card_values_trumpf(rank)
-    return _card_values(rank)
+        return _card_values_trumpf[rank]
+    # normal
+    return _card_values[rank]
 
 
 def card_description(card, trumpf_card):
     """Returns a description of the card"""
-    pass
-
-
-def card_value(card, trumpf_card):
-    """Returns the value of the card"""
     pass
 
 
