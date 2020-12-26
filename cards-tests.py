@@ -11,3 +11,6 @@ print(cards.random_card_set())
 new_game = cards.TwoPlayerJassStatus(100, 666)
 
 new_game.dump()
+
+
+print(cards.card_to_code(3))

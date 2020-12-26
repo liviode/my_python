@@ -7,11 +7,11 @@ class TestStringMethods(unittest2.TestCase):
 
     def test_code(self):
         c = cards.card_to_code(0)
-        self.assertEqual(c, 'SE As')
+        self.assertEqual(c, 'SE-As')
         c = cards.card_to_code(9)
-        self.assertEqual(c, 'SI As')
+        self.assertEqual(c, 'SI-As')
         c = cards.card_to_code(10)
-        self.assertEqual(c, 'SI Kö')
+        self.assertEqual(c, 'SI-Kö')
 
     def test_card_value(self):
         """Card Value Tests"""

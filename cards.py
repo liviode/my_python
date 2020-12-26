@@ -67,7 +67,7 @@ def to_card(card_code, color_name):
 
 
 def card_to_code(card):
-    return _card_color_names[card // 9] + ' ' + _card_codes[card % 9]
+    return _card_color_names[card // 9] + '-' + _card_codes[card % 9]
 
 
 def card_rank(card):
@@ -96,8 +96,13 @@ def card_value(card, trumpf_card=None):
     return _card_values[rank]
 
 
-def card_description(card, trumpf_card):
+def card_description(card, trumpf_card=None):
     """Returns a description of the card"""
+
+    color_index = card // 9
+    rank_index = card % 9
+    if trumpf_card==None:
+        return _card_color_descriptions[color_index] + ' ' + _card_descriptions[rank_index]
     pass
 
 
@@ -116,4 +121,3 @@ def random_card_set2(max=36):
     return random.sample(new_card_set, k=36)
 
 
-print(random_card_set2())
