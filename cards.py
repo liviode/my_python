@@ -107,7 +107,9 @@ def card_description(card, trumpf_card=None):
 
 
 def winner_card(card1, card2, trumpf_card):
-    pass
+    # TODO Das ist noch falsch
+    return card1 if card1>card2 else card2
+
 
 
 # see : https://docs.python.org/3/library/random.html
