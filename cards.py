@@ -52,7 +52,13 @@ _card_values_bottom = [0, 4, 3, 2, 10, 0, 8, 0, 11]
 _card_values_trumpf = [11, 4, 3, 20, 10, 14, 0, 0, 0]
 
 _card_codes = ['As', 'Kö', 'Ob', 'Un', 'Ba', '09', '08', '07', '06']
-
+# 0 = Schelle Ass
+# 1 = Schelle Konig
+# ...
+# 9 = Schilte Ass
+# 10 = Schilte König
+# ...
+# 35 = Eichle Sechsi
 _card_color_names = ['SE', 'SI', 'RO', 'EI']
 _card_color_descriptions = ['Schälle', 'Schilte', 'Rose', 'Eichle']
 _card_descriptions_trumpf = ['Trumpf Ass', 'Trumpf König', 'Trumpf Ober', 'Trumpf Puur', 'Trumpf Banner', 'Näll',
@@ -79,6 +85,7 @@ def card_color_of(card):
 
 
 def card_value(card, trumpf_card=None):
+    """Returns value of card with trumpf trumpf_card"""
     rank = card % 9
     if trumpf_card == None:
         return _card_values[rank]
@@ -90,7 +97,7 @@ def card_value(card, trumpf_card=None):
     if (trumpf_rank == 8):
         return _card_values_bottom[rank]
     # trumpf
-    if (card // 9 == trumpf_card // 9):
+    if ((card // 9) == (trumpf_card // 9)):
         return _card_values_trumpf[rank]
     # normal
     return _card_values[rank]

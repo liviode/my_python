@@ -3,14 +3,13 @@ import cards
 
 # Array
 a = [[1, 2, 3], [4, 5, 6]]
-print(a[0])
-print(a[1])
+# print(a[0])
+# print(a[1])
 
-print(cards.random_card_set())
+# print(cards.random_card_set())
+#
+# new_game = cards.TwoPlayerJassStatus(100, 666)
+# new_game.dump()
 
-new_game = cards.TwoPlayerJassStatus(100, 666)
 
-new_game.dump()
-
-
-print(cards.card_to_code(3))
+print(cards.card_value(35, 35))
