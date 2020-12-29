@@ -14,11 +14,31 @@ class TwoPlayerJassStatus:
             self.cards[3].append(new_card_set[i + 27])
         self.current_player_index = 0
         self.players = [player1, player2]
+        self._currentPlayer = player1
+        self._currentCards = {player1: self.cards[0], player2: self.cards[1]}
         self.card_on_table = None
         self.stacks = [[], []]
+        self._round = 'first'
+        self._table_card = None
 
     def trumpf_card(self):
         return self.cards[3][8]
+
+    def table_card(self):
+        return self._table_card
+
+    def currentPlayer(self):
+        return self._currentPlayer
+
+    def status(self, player):
+        cards = self._currentCards[player]
+        round = self._round
+        if self._table_card == None:
+            playable_cards = cards
+        else:
+            playable_cards = filter_playable_cards(cards, self.trumpf_card(), self.trumpf_card())
+        return {'cards': cards, 'round': round, 'trumpf': self.trumpf_card(), 'table_card': self._table_card,
+                'playable_cards': playable_cards}
 
     def dump(self):
         print('player 1 first round', self.cards[0])
@@ -27,17 +47,17 @@ class TwoPlayerJassStatus:
         print('player 2 second round', self.cards[3])
         print('trumpf cards', self.trumpf_card())
 
-    def playCardFist(self, player, card):
+    def playCard(self, player, card):
         pass
 
+    def playFirstCard(self, player, card):
+        pass
 
     def playCardSecond(self, player, card):
         pass
 
-
     def possible_moves(self):
         pass
-
 
     def move(self, player, player_card):
         if self.players[self.current_player_index] != player:
@@ -48,7 +68,6 @@ class TwoPlayerJassStatus:
             return 'card_on_table'
         else:
             wc = winner_card(player_card, self.card_on_table, self.trumpf_card())
-
 
     def add_to_stack(self, player, card1, card2):
         ind = self.players.index(player)
@@ -173,9 +192,16 @@ def winner_card(card1, card2, trumpf_card):
     # never should reach this
     return -1
 
-    # Wenn trumpf_card 'obe-nabe' ist ...
-    # Wenn trumpf_card unde-ufe ist....
-    # Wenn trumpf_card normal trumpf ist....
+
+def filter_playable_cards(cards, table_card, trumpf_card):
+    """Returns a sub-set of cards that can be played"""
+    if table_card == None:
+        return cards
+    else:
+        new_cards = []
+        for card in cards:
+            new_cards.insert(card)
+    return new_cards
 
 
 # see : https://docs.python.org/3/library/random.html
