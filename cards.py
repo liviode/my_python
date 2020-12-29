@@ -27,8 +27,17 @@ class TwoPlayerJassStatus:
         print('player 2 second round', self.cards[3])
         print('trumpf cards', self.trumpf_card())
 
+    def playCardFist(self, player, card):
+        pass
+
+
+    def playCardSecond(self, player, card):
+        pass
+
+
     def possible_moves(self):
         pass
+
 
     def move(self, player, player_card):
         if self.players[self.current_player_index] != player:
@@ -40,6 +49,7 @@ class TwoPlayerJassStatus:
         else:
             wc = winner_card(player_card, self.card_on_table, self.trumpf_card())
 
+
     def add_to_stack(self, player, card1, card2):
         ind = self.players.index(player)
         self.stacks[ind].append(card1)
@@ -50,6 +60,7 @@ _card_values = [11, 4, 3, 2, 10, 0, 0, 0, 0]
 _card_values_top = [11, 4, 3, 2, 10, 0, 8, 0, 0]
 _card_values_bottom = [0, 4, 3, 2, 10, 0, 8, 0, 11]
 _card_values_trumpf = [11, 4, 3, 20, 10, 14, 0, 0, 0]
+_card_values_trumpf_win = [11, 10, 9, 20, 8, 14, 7, 6, 5]
 
 _card_codes = ['As', 'Kö', 'Ob', 'Un', 'Ba', '09', '08', '07', '06']
 # 0 = Schelle Ass
@@ -114,12 +125,57 @@ def card_description(card, trumpf_card=None):
 
 
 def winner_card(card1, card2, trumpf_card):
+    """Return 0 if card1 is winner 1 otherwise"""
     # TODO Das ist noch falsch
+
+    if card1 == card2:
+        return -1
+
+    trumpf_color = trumpf_card // 9
+    card1_color = card1 // 9
+    card2_color = card2 // 9
+    # top
+    if trumpf_card % 9 == 0:
+        if (card1 // 9) == (card2 // 9):
+            if (card1 % 9) > (card2 % 9):
+                return 1
+            else:
+                return 0
+        return 0
+    # bottom
+    if trumpf_card % 9 == 8:
+        if (card1 // 9) == (card2 // 9):
+            if (card1 % 9) < (card2 % 9):
+                return 1
+            else:
+                return 0
+        return 0
+    # both not trumpf
+    if (card1_color != trumpf_color) and (card2_color != trumpf_color):
+        if (card1 // 9) == (card2 // 9):
+            if (card1 % 9) > (card2 % 9):
+                return 1
+            else:
+                return 0
+        return 0
+    # card1 trumpf, card2 not trumpf
+    if (card1_color == trumpf_color) and (card2_color != trumpf_color):
+        return 0
+    # card2 trumpf, card1 not trumpf
+    if (card1_color != trumpf_color) and (card2_color == trumpf_color):
+        return 1
+    # card2 trumpf, card1 trumpf
+    if (card1_color == trumpf_color) and (card2_color == trumpf_color):
+        if _card_values_trumpf_win[card1 % 9] > _card_values_trumpf_win[card2 % 9]:
+            return 0
+        else:
+            return 1
+    # never should reach this
+    return -1
+
     # Wenn trumpf_card 'obe-nabe' ist ...
     # Wenn trumpf_card unde-ufe ist....
     # Wenn trumpf_card normal trumpf ist....
-
-    return card1 if card1 > card2 else card2
 
 
 # see : https://docs.python.org/3/library/random.html
