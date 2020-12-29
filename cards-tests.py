@@ -8,7 +8,7 @@ a = [[1, 2, 3], [4, 5, 6]]
 
 # print(cards.random_card_set())
 #
-# new_game = cards.TwoPlayerJassStatus(100, 666)
+# new_game = cards.Two_Player_Stich_Jass(100, 666)
 # new_game.dump()
 
 

@@ -1,8 +1,7 @@
 import random
 
-
-class TwoPlayerJassStatus:
-    """Class representing the game status of a two player Jass"""
+class Two_Player_Stich_Jass:
+    """Class representing the game status of a Two Player Stich Jass"""
 
     def __init__(self, player1, player2):
         self.cards = [[], [], [], []]
@@ -13,8 +12,8 @@ class TwoPlayerJassStatus:
             self.cards[2].append(new_card_set[i + 18])
             self.cards[3].append(new_card_set[i + 27])
         self.current_player_index = 0
-        self.players = [player1, player2]
-        self._currentPlayer = player1
+        self._players = [player1, player2]
+        self._current_player = player1
         self._currentCards = {player1: self.cards[0], player2: self.cards[1]}
         self.card_on_table = None
         self.stacks = [[], []]
@@ -27,18 +26,26 @@ class TwoPlayerJassStatus:
     def table_card(self):
         return self._table_card
 
-    def currentPlayer(self):
-        return self._currentPlayer
+    def players(self) -> list:
+        return self._players
 
-    def status(self, player):
-        cards = self._currentCards[player]
-        round = self._round
-        if self._table_card == None:
-            playable_cards = cards
-        else:
-            playable_cards = filter_playable_cards(cards, self.trumpf_card(), self.trumpf_card())
-        return {'cards': cards, 'round': round, 'trumpf': self.trumpf_card(), 'table_card': self._table_card,
-                'playable_cards': playable_cards}
+    def current_player(self):
+        return self._current_player
+
+    def round(self):
+        return self._round
+
+    def score(self):
+        sc = {}
+        sc[self.players()[0]] = -1
+        sc[self.players()[1]] = -1
+        return sc
+
+    def player_cards(self, player):
+        return self._currentCards[player]
+
+    def playable_cards(self, player):
+        return filter_playable_cards(self.player_cards(player), self.trumpf_card(), self.trumpf_card())
 
     def dump(self):
         print('player 1 first round', self.cards[0])
@@ -47,20 +54,20 @@ class TwoPlayerJassStatus:
         print('player 2 second round', self.cards[3])
         print('trumpf cards', self.trumpf_card())
 
-    def playCard(self, player, card):
+    def play_card(self, player, card):
         pass
 
     def playFirstCard(self, player, card):
         pass
 
-    def playCardSecond(self, player, card):
+    def play_cardSecond(self, player, card):
         pass
 
     def possible_moves(self):
         pass
 
     def move(self, player, player_card):
-        if self.players[self.current_player_index] != player:
+        if self._players[self.current_player_index] != player:
             return 'no_your_turn'
         if self.card_on_table is None:
             self.card_on_table = player_card
@@ -70,7 +77,7 @@ class TwoPlayerJassStatus:
             wc = winner_card(player_card, self.card_on_table, self.trumpf_card())
 
     def add_to_stack(self, player, card1, card2):
-        ind = self.players.index(player)
+        ind = self._players.index(player)
         self.stacks[ind].append(card1)
         self.stacks[ind].append(card2)
 
@@ -200,7 +207,7 @@ def filter_playable_cards(cards, table_card, trumpf_card):
     else:
         new_cards = []
         for card in cards:
-            new_cards.insert(card)
+            new_cards.append(card)
     return new_cards
 
 

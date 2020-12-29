@@ -3,9 +3,9 @@ import cards
 
 # shuffle
 
-newGame1 = cards.TwoPlayerJassStatus('livio','toni')
+newGame1 = cards.Two_Player_Stich_Jass('livio','toni')
 
-newGame2 = cards.TwoPlayerJassStatus('toni', 'livio')
+newGame2 = cards.Two_Player_Stich_Jass('toni', 'livio')
 
 
 print('**** Game 1 ****')
