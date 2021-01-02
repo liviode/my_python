@@ -1,30 +1,30 @@
 import random
 
+
 class Two_Player_Stich_Jass:
     """Class representing the game status of a Two Player Stich Jass"""
 
     def __init__(self, player1, player2):
-        self.cards = [[], [], [], []]
+        self._cards = [[], [], [], []]
         new_card_set = random_card_set2()
         for i in range(len(new_card_set) // 4):
-            self.cards[0].append(new_card_set[i])
-            self.cards[1].append(new_card_set[i + 9])
-            self.cards[2].append(new_card_set[i + 18])
-            self.cards[3].append(new_card_set[i + 27])
-        self.current_player_index = 0
+            self._cards[0].append(new_card_set[i])
+            self._cards[1].append(new_card_set[i + 9])
+            self._cards[2].append(new_card_set[i + 18])
+            self._cards[3].append(new_card_set[i + 27])
+        self._current_player_index = 0
         self._players = [player1, player2]
         self._current_player = player1
-        self._currentCards = {player1: self.cards[0], player2: self.cards[1]}
-        self.card_on_table = None
-        self.stacks = [[], []]
-        self._round = 'first'
-        self._table_card = None
+        self._current_cards = {self._players[0]: self._cards[0], self._players[1]: self._cards[1]}
+        self._cards_on_table = []
+        self._stacks = {player1: [], player2: []}
+        self._round = 0
 
     def trumpf_card(self):
-        return self.cards[3][8]
+        return self._cards[3][8]
 
-    def table_card(self):
-        return self._table_card
+    def cards_on_table(self):
+        return self._cards_on_table
 
     def players(self) -> list:
         return self._players
@@ -37,49 +37,59 @@ class Two_Player_Stich_Jass:
 
     def score(self):
         sc = {}
-        sc[self.players()[0]] = -1
-        sc[self.players()[1]] = -1
+        sc[self._players[0]] = 0
+        sc[self._players[1]] = 0
         return sc
 
     def player_cards(self, player):
-        return self._currentCards[player]
+        return self._current_cards[player]
 
     def playable_cards(self, player):
         return filter_playable_cards(self.player_cards(player), self.trumpf_card(), self.trumpf_card())
 
-    def dump(self):
-        print('player 1 first round', self.cards[0])
-        print('player 2 first round', self.cards[1])
-        print('player 1 second round', self.cards[2])
-        print('player 2 second round', self.cards[3])
-        print('trumpf cards', self.trumpf_card())
-
     def play_card(self, player, card):
-        pass
+        if player != self._current_player:
+            return 'wrong_player'
+        if len(self._cards_on_table) == 2:
+            self._cards_on_table = []
+        other_player = self._players[0] if self._players[0] != player else self._players[1]
+        # is the card part of players current cards?
+        self._cards_on_table.append({'player': player, 'card': card})
+        hand = self._current_cards[player]
+        # filter out the card
+        new_hand = [c for c in hand if c != card]
+        self._current_cards[player] = new_hand
+        # if one cards on table...
+        if len(self._cards_on_table) == 1:
+            self._current_player = other_player
+            return 'waiting_for_second_card'
+        # if two cards on table...
+        if len(self._cards_on_table) == 2:
+            w = winner_card(self._cards_on_table[0]['card'], self._cards_on_table[1]['card'], self.trumpf_card())
+            if w == 0:
+                self._current_player = other_player
+                self._stacks[other_player].append(self._cards_on_table[0]['card'])
+                self._stacks[other_player].append(self._cards_on_table[1]['card'])
+            else:
+                self._current_player = player
+                self._stacks[player].append(self._cards_on_table[0]['card'])
+                self._stacks[player].append(self._cards_on_table[1]['card'])
+            if len(self._current_cards[player]) == 0 and len(self._current_cards[other_player]) == 0:
+                if self._round == 0:
+                    self._round = 1
+                    self._current_cards = {self._players[0]: self._cards[2], self._players[1]: self._cards[3]}
+                    return 'start_of_second_round'
+                else:
+                    return 'end_of_game'
+            return 'continue'
 
-    def playFirstCard(self, player, card):
-        pass
 
-    def play_cardSecond(self, player, card):
-        pass
-
-    def possible_moves(self):
-        pass
-
-    def move(self, player, player_card):
-        if self._players[self.current_player_index] != player:
-            return 'no_your_turn'
-        if self.card_on_table is None:
-            self.card_on_table = player_card
-            self.current_player_index = self.current_player_index + 1 % 2
-            return 'card_on_table'
-        else:
-            wc = winner_card(player_card, self.card_on_table, self.trumpf_card())
-
-    def add_to_stack(self, player, card1, card2):
-        ind = self._players.index(player)
-        self.stacks[ind].append(card1)
-        self.stacks[ind].append(card2)
+def dump(self):
+    print('player 1 first round', self._cards[0])
+    print('player 2 first round', self._cards[1])
+    print('player 1 second round', self._cards[2])
+    print('player 2 second round', self._cards[3])
+    print('trumpf cards', self.trumpf_card())
 
 
 _card_values = [11, 4, 3, 2, 10, 0, 0, 0, 0]
@@ -151,9 +161,7 @@ def card_description(card, trumpf_card=None):
 
 
 def winner_card(card1, card2, trumpf_card):
-    """Return 0 if card1 is winner 1 otherwise"""
-    # TODO Das ist noch falsch
-
+    """Return 0 if card1 is winner, 1 otherwise."""
     if card1 == card2:
         return -1
 
